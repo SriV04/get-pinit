@@ -4,11 +4,13 @@ import { useEffect, useRef } from 'react';
 
 type Drop = {
   id: number;
+  type: DropType;
   x: number;
   y: number;
   vx: number;
   vy: number;
   radius: number;
+  size: number;
   rotation: number;
   spin: number;
   mass: number;
@@ -33,6 +35,20 @@ type Blast = {
   createdAt: number;
   particles: BlastParticle[];
 };
+
+type DropType = {
+  name: string;
+  emoji: string;
+  imageSrc?: string;
+  weight: number;
+};
+
+const DROP_TYPES: DropType[] = [
+  { name: 'burger', emoji: '🍔', weight: 0.4 },
+  { name: 'disco', emoji: '🪩', weight: 0.2 },
+  { name: 'pint', emoji: '🍺', weight: 0.25 },
+  { name: 'tiktok', emoji: '🎵', imageSrc: '/tiktok-logo.png', weight: 0.15 },
+];
 
 const MAX_DROPS = 8;
 const GRAVITY = 720;
@@ -69,6 +85,14 @@ export function GlobeAnimationCanvas() {
     const pinImage = new Image();
     pinImage.src = '/Pinit Pin.png';
     pinImage.decoding = 'async';
+    const dropImages = new Map<string, HTMLImageElement>();
+    DROP_TYPES.forEach((type) => {
+      if (!type.imageSrc) return;
+      const image = new Image();
+      image.src = type.imageSrc;
+      image.decoding = 'async';
+      dropImages.set(type.name, image);
+    });
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -79,20 +103,33 @@ export function GlobeAnimationCanvas() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      radius = width * 0.75;
+      radius = width * 0.5;
       centerX = width / 2;
       centerY = height + radius * 0.38;
     };
 
+    const pickDropType = () => {
+      const total = DROP_TYPES.reduce((sum, type) => sum + type.weight, 0);
+      let roll = Math.random() * total;
+      for (const type of DROP_TYPES) {
+        roll -= type.weight;
+        if (roll <= 0) return type;
+      }
+      return DROP_TYPES[0];
+    };
+
     const spawnDrop = (now: number) => {
       const size = 28 + Math.random() * 18;
+      const type = pickDropType();
       drops.push({
         id: now + Math.random(),
+        type,
         x: width * (0.15 + Math.random() * 0.7),
         y: -size,
         vx: (Math.random() - 0.5) * 30,
         vy: 20 + Math.random() * 40,
         radius: size * 0.5,
+        size,
         rotation: Math.random() * Math.PI * 2,
         spin: (Math.random() - 0.5) * 2.4,
         mass: 0.8 + Math.random() * 0.6,
@@ -295,37 +332,24 @@ export function GlobeAnimationCanvas() {
       ctx.restore();
     };
 
-    const drawBurger = (drop: Drop) => {
+    const drawDrop = (drop: Drop) => {
+      const image = dropImages.get(drop.type.name);
+      if (image && image.complete && image.naturalWidth > 0) {
+        ctx.save();
+        ctx.translate(drop.x, drop.y);
+        ctx.rotate(drop.rotation);
+        ctx.drawImage(image, -drop.size * 0.5, -drop.size * 0.5, drop.size, drop.size);
+        ctx.restore();
+        return;
+      }
+
       ctx.save();
       ctx.translate(drop.x, drop.y);
       ctx.rotate(drop.rotation);
-      const scale = drop.radius / 32;
-      ctx.scale(scale, scale);
-      ctx.fillStyle = '#f7c76a';
-      ctx.beginPath();
-      ctx.moveTo(-20, 0);
-      ctx.quadraticCurveTo(0, -18, 20, 0);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = '#db6b4b';
-      ctx.fillRect(-22, 2, 44, 6);
-
-      ctx.fillStyle = '#f4a460';
-      ctx.fillRect(-24, 10, 48, 14);
-
-      ctx.strokeStyle = '#6b3b2a';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(-16, 12);
-      ctx.lineTo(16, 12);
-      ctx.stroke();
-
-      ctx.strokeStyle = '#7abf5a';
-      ctx.beginPath();
-      ctx.moveTo(-18, 18);
-      ctx.lineTo(18, 18);
-      ctx.stroke();
+      ctx.font = `${drop.size}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(drop.type.emoji, 0, 0);
       ctx.restore();
     };
 
@@ -347,7 +371,7 @@ export function GlobeAnimationCanvas() {
         }
       }
 
-      drops.forEach(drawBurger);
+      drops.forEach(drawDrop);
 
       animationFrame = window.requestAnimationFrame(render);
     };
@@ -373,24 +397,89 @@ function createEarthTexture() {
   if (!ctx) return texture;
 
   const oceanGradient = ctx.createLinearGradient(0, 0, 0, texture.height);
-  oceanGradient.addColorStop(0, '#1b5fd1');
-  oceanGradient.addColorStop(1, '#0b2e6f');
+  oceanGradient.addColorStop(0, '#1c64d5');
+  oceanGradient.addColorStop(1, '#0a2e6f');
   ctx.fillStyle = oceanGradient;
   ctx.fillRect(0, 0, texture.width, texture.height);
 
-  drawContinent(ctx, 170, 210, 240, 140, '#4ddc7a');
-  drawContinent(ctx, 380, 260, 180, 120, '#3fbf6e');
-  drawContinent(ctx, 620, 190, 220, 120, '#61e08b');
-  drawContinent(ctx, 780, 280, 180, 120, '#3fbf6e');
-  drawContinent(ctx, 900, 200, 120, 90, '#55d982');
-  drawContinent(ctx, 540, 360, 200, 110, '#d5a86a');
+  drawContinent(ctx, 140, 190, 260, 160, '#4ddc7a');
+  drawContinent(ctx, 310, 290, 210, 130, '#3fbf6e');
+  drawContinent(ctx, 470, 230, 240, 150, '#61e08b');
+  drawContinent(ctx, 640, 330, 220, 140, '#3fbf6e');
+  drawContinent(ctx, 760, 220, 260, 150, '#55d982');
+  drawContinent(ctx, 910, 300, 160, 110, '#3fbf6e');
+  drawContinent(ctx, 520, 380, 240, 120, '#d5a86a');
+
+  drawContinent(ctx, 860, 110, 140, 80, '#73e59b');
+  drawContinent(ctx, 80, 330, 160, 90, '#55d982');
+
+  addTerrainTexture(ctx, texture.width, texture.height);
+  addOceanTexture(ctx, texture.width, texture.height);
+  addIceCaps(ctx, texture.width, texture.height);
+  addCloudBands(ctx, texture.width, texture.height);
 
   ctx.globalCompositeOperation = 'multiply';
-  ctx.fillStyle = 'rgba(128, 64, 168, 0.2)';
+  ctx.fillStyle = 'rgba(128, 64, 168, 0.16)';
   ctx.fillRect(0, 0, texture.width, texture.height);
   ctx.globalCompositeOperation = 'source-over';
 
   return texture;
+}
+
+function addTerrainTexture(ctx: CanvasRenderingContext2D, width: number, height: number) {
+  ctx.save();
+  ctx.globalAlpha = 0.25;
+  for (let i = 0; i < 240; i += 1) {
+    const x = Math.random() * width;
+    const y = Math.random() * height;
+    const w = 20 + Math.random() * 40;
+    const h = 8 + Math.random() * 18;
+    ctx.fillStyle = 'rgba(36, 128, 72, 0.6)';
+    ctx.beginPath();
+    ctx.ellipse(x, y, w, h, Math.random() * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function addOceanTexture(ctx: CanvasRenderingContext2D, width: number, height: number) {
+  ctx.save();
+  ctx.globalAlpha = 0.25;
+  ctx.strokeStyle = 'rgba(118, 189, 255, 0.35)';
+  for (let i = 0; i < 180; i += 1) {
+    const x = Math.random() * width;
+    const y = Math.random() * height;
+    const w = 30 + Math.random() * 60;
+    ctx.beginPath();
+    ctx.arc(x, y, w, 0, Math.PI);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function addIceCaps(ctx: CanvasRenderingContext2D, width: number, height: number) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(230, 242, 255, 0.85)';
+  ctx.beginPath();
+  ctx.ellipse(width * 0.3, height * 0.08, 140, 35, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(width * 0.65, height * 0.92, 180, 45, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function addCloudBands(ctx: CanvasRenderingContext2D, width: number, height: number) {
+  ctx.save();
+  ctx.globalAlpha = 0.35;
+  ctx.fillStyle = 'rgba(240, 248, 255, 0.7)';
+  for (let i = 0; i < 8; i += 1) {
+    const y = 70 + i * 50;
+    ctx.beginPath();
+    ctx.ellipse(width * (0.15 + Math.random() * 0.7), y, 160, 18, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
 }
 
 function drawContinent(
