@@ -22,5 +22,49 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), "Segoe UI", system-ui, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-scene {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at top, #7a1fa1 0%, #3b0a57 45%, #1a062a 100%);
+}
+
+.hero-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(221, 160, 255, 0.35), transparent 45%),
+    radial-gradient(circle at 70% 25%, rgba(255, 192, 233, 0.25), transparent 50%),
+    linear-gradient(180deg, rgba(122, 31, 161, 0.9) 0%, rgba(56, 10, 92, 0.95) 55%, rgba(26, 6, 42, 1) 100%);
+}
+
+.hero-logo {
+  position: absolute;
+  top: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(460px, 78vw);
+  z-index: 2;
+}
+
+.hero-logo img {
+  width: 100%;
+  height: auto;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
