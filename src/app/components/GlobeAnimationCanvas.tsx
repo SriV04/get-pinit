@@ -76,6 +76,7 @@ export function GlobeAnimationCanvas() {
     let lastTime = performance.now();
     let rotation = 0;
     let nextDropAt = 0;
+    let isVisible = true;
 
     const drops: Drop[] = [];
     const pins: Pin[] = [];
@@ -103,7 +104,7 @@ export function GlobeAnimationCanvas() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      radius = width * 0.5;
+      radius = width * (width >= 1024 ? 0.42 : 0.5);
       centerX = width / 2;
       centerY = height + radius * 0.38;
     };
@@ -354,6 +355,12 @@ export function GlobeAnimationCanvas() {
     };
 
     const render = (now: number) => {
+      if (!isVisible) {
+        lastTime = now;
+        animationFrame = window.requestAnimationFrame(render);
+        return;
+      }
+
       const dt = Math.min(0.04, (now - lastTime) / 1000);
       lastTime = now;
 
@@ -376,12 +383,21 @@ export function GlobeAnimationCanvas() {
       animationFrame = window.requestAnimationFrame(render);
     };
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(canvas);
     resize();
     animationFrame = window.requestAnimationFrame(render);
     window.addEventListener('resize', resize);
 
     return () => {
       window.removeEventListener('resize', resize);
+      observer.disconnect();
       window.cancelAnimationFrame(animationFrame);
     };
   }, []);
