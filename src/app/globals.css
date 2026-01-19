@@ -244,11 +244,11 @@ body {
 
 .features-scene {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   scroll-snap-align: start;
-  background: #fdfcfb;
-  color: #1a062a;
-  padding: 10vh 8vw;
+  background: #ffffff;
+  color: #000000;
+  padding: 4vh 4vw;
   overflow: hidden;
 }
 
@@ -300,22 +300,30 @@ body {
 .features-content {
   position: relative;
   z-index: 2;
-  display: grid;
-  gap: 3rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+}
+
+.features-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .features-header h2 {
-  font-size: clamp(2rem, 3vw, 3rem);
-  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  margin-bottom: 0.5rem;
   font-weight: 600;
-  line-height: 1.2;
-  color: #1a062a;
+  line-height: 1.3;
+  color: #000000;
 }
 
 .features-header p {
-  max-width: 620px;
-  color: rgba(26, 6, 42, 0.7);
-  line-height: 1.6;
+  max-width: 800px;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.5;
 }
 
 .features-grid {
@@ -443,7 +451,8 @@ body {
   }
 
   .features-scene {
-    padding: 8vh 6vw;
+    height: 100vh;
+    padding: 4vh 3vw;
   }
 
   .features-grid {
@@ -494,7 +503,8 @@ body {
   }
 
   .features-scene {
-    padding: 10vh 8vw;
+    height: 100vh;
+    padding: 4vh 4vw;
   }
 
   .features-grid {
@@ -503,7 +513,7 @@ body {
   }
 
   .features-content {
-    max-width: 1300px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 }
@@ -539,7 +549,8 @@ body {
   }
 
   .features-scene {
-    padding: 12vh 10vw;
+    height: 100vh;
+    padding: 4vh 5vw;
   }
 
   .features-grid {
@@ -549,9 +560,8 @@ body {
   }
 
   .features-content {
-    max-width: 1500px;
+    max-width: 1600px;
     margin: 0 auto;
-    gap: 4rem;
   }
 
   .feature-card {
@@ -568,8 +578,8 @@ body {
   }
 
   .features-header h2 {
-    font-size: clamp(2.5rem, 2.8vw, 3.5rem);
-    color: #1a062a;
+    font-size: clamp(2rem, 3vw, 3rem);
+    color: #000000;
   }
 
   .intro-skip-button {
@@ -616,7 +626,8 @@ body {
   }
 
   .features-scene {
-    padding: 12vh 15vw;
+    height: 100vh;
+    padding: 4vh 8vw;
   }
 
   .features-grid {
@@ -625,7 +636,7 @@ body {
   }
 
   .features-content {
-    max-width: 1800px;
+    max-width: 2000px;
   }
 
   .feature-card {
