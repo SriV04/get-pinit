@@ -53,8 +53,8 @@ const FEATURES = [
 const PROBLEMS = [
   "Restaurants saved directly from your reels",
   "Real time options for every occasion",
-  "Options for that one fussy friend",
-  "Overpriced options"
+  "Something for that one fussy friend",
+  "Satisfy any of your wild midnight cravings",
 ];
 
 export const FeaturesSection = forwardRef<HTMLElement>(function FeaturesSection(_, ref) {

@@ -77,6 +77,7 @@ const RESTAURANT_URLS: Record<string, string> = {
   'kiln': 'https://kilnsoho.com/',
   'luso': 'https://luso.restaurant/',
   'bottarga': 'https://bottarga.london/',
+  'caso de frango': 'https://casadofrango.co.uk/',
 };
 
 const getRestaurantUrl = (name: string): string | null => {
