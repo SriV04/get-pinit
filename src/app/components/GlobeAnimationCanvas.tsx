@@ -50,8 +50,8 @@ const DROP_TYPES: DropType[] = [
   { name: 'tiktok', emoji: '🎵', imageSrc: '/tiktok-logo.png', weight: 0.15 },
 ];
 
-const MAX_DROPS = 8;
-const GRAVITY = 720;
+const MAX_DROPS = 4;
+const GRAVITY = 500;
 const DRAG = 0.12;
 const WIND_STRENGTH = 16;
 const ROTATION_SPEED = 0.12;
@@ -126,7 +126,7 @@ export function GlobeAnimationCanvas() {
         id: now + Math.random(),
         type,
         x: width * (0.15 + Math.random() * 0.7),
-        y: -size,
+        y: -size - 700,
         vx: (Math.random() - 0.5) * 30,
         vy: 20 + Math.random() * 40,
         radius: size * 0.5,
@@ -204,7 +204,7 @@ export function GlobeAnimationCanvas() {
 
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      ctx.fillStyle = '#2d0f44';
+      ctx.fillStyle = '#ffffff';
       ctx.fill();
 
       const step = Math.max(1.5, radius / 320);
@@ -235,9 +235,9 @@ export function GlobeAnimationCanvas() {
         centerY - radius * 0.2,
         radius
       );
-      highlight.addColorStop(0, 'rgba(245, 221, 255, 0.55)');
-      highlight.addColorStop(0.5, 'rgba(165, 92, 213, 0.15)');
-      highlight.addColorStop(1, 'rgba(50, 10, 72, 0.7)');
+      highlight.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+      highlight.addColorStop(0.5, 'rgba(240, 240, 240, 0.2)');
+      highlight.addColorStop(1, 'rgba(200, 200, 200, 0.3)');
       ctx.globalCompositeOperation = 'screen';
       ctx.fillStyle = highlight;
       ctx.beginPath();
@@ -253,8 +253,8 @@ export function GlobeAnimationCanvas() {
         radius
       );
       shade.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      shade.addColorStop(0.6, 'rgba(20, 0, 40, 0.35)');
-      shade.addColorStop(1, 'rgba(10, 0, 25, 0.8)');
+      shade.addColorStop(0.6, 'rgba(100, 100, 100, 0.15)');
+      shade.addColorStop(1, 'rgba(80, 80, 80, 0.3)');
       ctx.globalCompositeOperation = 'multiply';
       ctx.fillStyle = shade;
       ctx.beginPath();
@@ -262,7 +262,7 @@ export function GlobeAnimationCanvas() {
       ctx.fill();
 
       ctx.globalCompositeOperation = 'source-over';
-      ctx.strokeStyle = 'rgba(214, 169, 255, 0.35)';
+      ctx.strokeStyle = 'rgba(200, 200, 200, 0.5)';
       ctx.lineWidth = 6;
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius + 4, 0, Math.PI * 2);
@@ -315,13 +315,13 @@ export function GlobeAnimationCanvas() {
 
       ctx.save();
       ctx.globalAlpha = 1 - t;
-      ctx.strokeStyle = 'rgba(255, 230, 184, 0.9)';
+      ctx.strokeStyle = 'rgba(251, 100, 21, 0.9)';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.arc(screenX, screenY, ringRadius, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(255, 197, 246, 0.9)';
+      ctx.fillStyle = 'rgba(251, 100, 21, 0.7)';
       blast.particles.forEach((particle) => {
         const px = screenX + Math.cos(particle.angle) * particle.speed * t;
         const py = screenY - Math.sin(particle.angle) * particle.speed * t;
@@ -413,31 +413,32 @@ function createEarthTexture() {
   if (!ctx) return texture;
 
   const oceanGradient = ctx.createLinearGradient(0, 0, 0, texture.height);
-  oceanGradient.addColorStop(0, '#1c64d5');
-  oceanGradient.addColorStop(1, '#0a2e6f');
+  oceanGradient.addColorStop(0, '#c0c8d0');
+  oceanGradient.addColorStop(1, '#90989f');
   ctx.fillStyle = oceanGradient;
   ctx.fillRect(0, 0, texture.width, texture.height);
 
-  drawContinent(ctx, 140, 190, 260, 160, '#4ddc7a');
-  drawContinent(ctx, 310, 290, 210, 130, '#3fbf6e');
-  drawContinent(ctx, 470, 230, 240, 150, '#61e08b');
-  drawContinent(ctx, 640, 330, 220, 140, '#3fbf6e');
-  drawContinent(ctx, 760, 220, 260, 150, '#55d982');
-  drawContinent(ctx, 910, 300, 160, 110, '#3fbf6e');
-  drawContinent(ctx, 520, 380, 240, 120, '#d5a86a');
+  drawContinent(ctx, 140, 190, 260, 160, '#d8dce0');
+  drawContinent(ctx, 310, 290, 210, 130, '#c5cad0');
+  drawContinent(ctx, 470, 230, 240, 150, '#d0d5db');
+  drawContinent(ctx, 640, 330, 220, 140, '#c5cad0');
+  drawContinent(ctx, 760, 220, 260, 150, '#ccd2d8');
+  drawContinent(ctx, 910, 300, 160, 110, '#c5cad0');
+  drawContinent(ctx, 520, 380, 240, 120, '#b0b8c0');
 
-  drawContinent(ctx, 860, 110, 140, 80, '#73e59b');
-  drawContinent(ctx, 80, 330, 160, 90, '#55d982');
+  drawContinent(ctx, 860, 110, 140, 80, '#dce0e4');
+  drawContinent(ctx, 80, 330, 160, 90, '#ccd2d8');
 
   addTerrainTexture(ctx, texture.width, texture.height);
   addOceanTexture(ctx, texture.width, texture.height);
   addIceCaps(ctx, texture.width, texture.height);
   addCloudBands(ctx, texture.width, texture.height);
 
-  ctx.globalCompositeOperation = 'multiply';
-  ctx.fillStyle = 'rgba(128, 64, 168, 0.16)';
-  ctx.fillRect(0, 0, texture.width, texture.height);
-  ctx.globalCompositeOperation = 'source-over';
+  // Purple tint removed for clean white aesthetic
+  // ctx.globalCompositeOperation = 'multiply';
+  // ctx.fillStyle = 'rgba(128, 64, 168, 0.16)';
+  // ctx.fillRect(0, 0, texture.width, texture.height);
+  // ctx.globalCompositeOperation = 'source-over';
 
   return texture;
 }
@@ -450,7 +451,7 @@ function addTerrainTexture(ctx: CanvasRenderingContext2D, width: number, height:
     const y = Math.random() * height;
     const w = 20 + Math.random() * 40;
     const h = 8 + Math.random() * 18;
-    ctx.fillStyle = 'rgba(36, 128, 72, 0.6)';
+    ctx.fillStyle = 'rgba(100, 100, 100, 0.3)';
     ctx.beginPath();
     ctx.ellipse(x, y, w, h, Math.random() * Math.PI, 0, Math.PI * 2);
     ctx.fill();
@@ -461,7 +462,7 @@ function addTerrainTexture(ctx: CanvasRenderingContext2D, width: number, height:
 function addOceanTexture(ctx: CanvasRenderingContext2D, width: number, height: number) {
   ctx.save();
   ctx.globalAlpha = 0.25;
-  ctx.strokeStyle = 'rgba(118, 189, 255, 0.35)';
+  ctx.strokeStyle = 'rgba(150, 150, 150, 0.2)';
   for (let i = 0; i < 180; i += 1) {
     const x = Math.random() * width;
     const y = Math.random() * height;
