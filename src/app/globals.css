@@ -246,8 +246,8 @@ body {
   position: relative;
   min-height: 100vh;
   scroll-snap-align: start;
-  background: linear-gradient(180deg, #2b0b3d 0%, #1a062a 100%);
-  color: #f7e9ff;
+  background: #fdfcfb;
+  color: #1a062a;
   padding: 10vh 8vw;
   overflow: hidden;
 }
@@ -309,11 +309,12 @@ body {
   margin-bottom: 1rem;
   font-weight: 600;
   line-height: 1.2;
+  color: #1a062a;
 }
 
 .features-header p {
   max-width: 620px;
-  color: rgba(236, 219, 255, 0.8);
+  color: rgba(26, 6, 42, 0.7);
   line-height: 1.6;
 }
 
@@ -568,6 +569,7 @@ body {
 
   .features-header h2 {
     font-size: clamp(2.5rem, 2.8vw, 3.5rem);
+    color: #1a062a;
   }
 
   .intro-skip-button {
