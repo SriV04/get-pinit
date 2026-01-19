@@ -909,6 +909,19 @@ body {
   transform: translateX(-50%);
 }
 
+/* Desktop - larger labels */
+@media (min-width: 1024px) {
+  .restaurant-label {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .restaurant-label {
+    font-size: 1.75rem;
+  }
+}
+
 /* Tablet and Mobile - adjust as globe positioning changes */
 @media (max-width: 1023px) {
   .restaurant-label {

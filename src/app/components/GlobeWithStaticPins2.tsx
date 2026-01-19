@@ -85,7 +85,7 @@ const getRestaurantUrl = (name: string): string | null => {
 };
 
 const MAX_DROPS = 2;
-const GRAVITY = 400;
+const GRAVITY = 250;
 const DRAG = 0.12;
 const WIND_STRENGTH = 16;
 const ROTATION_SPEED = 0.12;
@@ -252,13 +252,17 @@ export function GlobeStaticPins2() {
     const spawnDrop = (now: number) => {
       const type = pickDropType();
       const size = type.name === 'tiktok' ? 50 + Math.random() * 35 : 28 + Math.random() * 22;
+      // Use viewport height for responsive starting position
+      const startHeight = height * 1.2 + 500;
+      // Scale initial velocity based on screen size (slower on mobile)
+      const velocityScale = Math.min(1, width / 768);
       drops.push({
         id: now + Math.random(),
         type,
         x: width * (0.2 + Math.random() * 0.2),
-        y: -size - 400,
+        y: -size - startHeight,
         vx: (Math.random() - 0.5) * 20,
-        vy: 10 + Math.random() * 20,
+        vy: (3 + Math.random() * 7) * velocityScale,
         radius: size * 0.5,
         size,
         rotation: Math.random() * Math.PI * 2,
@@ -303,6 +307,8 @@ export function GlobeStaticPins2() {
       }
 
       const wind = Math.sin(now * 0.0006) * WIND_STRENGTH;
+      // Scale gravity based on screen size (slower on mobile)
+      const gravityScale = width < 768 ? 0.6 : 1;
 
       for (let i = drops.length - 1; i >= 0; i -= 1) {
         const drop = drops[i];
@@ -310,7 +316,7 @@ export function GlobeStaticPins2() {
         const gust = Math.sin(now * 0.001 + drop.windPhase) * 6;
         drop.vx += ((wind + gust) / drop.mass) * dt;
         drop.vx *= drag;
-        drop.vy += GRAVITY * drop.mass * dt;
+        drop.vy += GRAVITY * drop.mass * dt * gravityScale;
         drop.x += drop.vx * dt;
         drop.y += drop.vy * dt;
         drop.rotation += drop.spin * dt;
@@ -345,8 +351,9 @@ export function GlobeStaticPins2() {
 
       const screenX = centerX + x * radius;
       const screenY = centerY - y * radius;
-      const isDesktop = width >= 768;
-      const baseSize = (isDesktop ? 72 : 64) * (0.65 + z * 0.35);
+      // Scale pin size based on screen width (smaller on mobile)
+      const sizeScale = width < 768 ? 0.7 : 1;
+      const baseSize = 64 * (0.65 + z * 0.35) * sizeScale;
       const age = Math.min(1, (now - pin.createdAt) / 280);
       const pop = 0.85 + 0.2 * Math.sin(age * Math.PI);
 
@@ -367,7 +374,7 @@ export function GlobeStaticPins2() {
       // Draw label above the pin
       ctx.save();
       let labelY = screenY - baseSize * 1.2 * pop * hoverScale;
-      const fontSize = Math.round((isDesktop ? 16 : 14) * (0.7 + z * 0.3) * hoverScale);
+      const fontSize = Math.round(14 * (0.7 + z * 0.3) * hoverScale * sizeScale);
       const minLabelY = fontSize + 10; // Ensure label stays within canvas bounds
       if (labelY < minLabelY) {
         labelY = minLabelY;
