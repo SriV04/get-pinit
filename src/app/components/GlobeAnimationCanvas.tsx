@@ -44,9 +44,6 @@ type DropType = {
 };
 
 const DROP_TYPES: DropType[] = [
-  { name: 'burger', emoji: '🍔', weight: 0.4 },
-  { name: 'disco', emoji: '🪩', weight: 0.2 },
-  { name: 'pint', emoji: '🍺', weight: 0.25 },
   { name: 'tiktok', emoji: '🎵', imageSrc: '/tiktok-logo.png', weight: 0.15 },
 ];
 

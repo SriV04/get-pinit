@@ -3,70 +3,80 @@
 import { forwardRef } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Users, Gem, Share2, MapPin, Video, Gavel, Candy, Bell } from 'lucide-react';
+import { FeaturesBackground } from './FeaturesBackground';
 
 const FEATURES = [
   {
     title: 'Your Bubbles',
-    description: 'Create trusted circles of friends who share the best spots. See what your crew loves in real-time.',
+    description: 'Private groups of friends whose taste you actually trust. No influencers. No algorithms. Just real recommendations from real people.',
     icon: Users,
-    size: 'large',
-    gradient: 'from-purple-500/20 to-pink-500/20',
+    size: 'medium',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(26, 22, 61, 0.9), rgba(26, 22, 61, 0.8))',
   },
   {
     title: 'TikTok Integration',
     description: 'Save spots straight from your feed',
     icon: Video,
     size: 'medium',
-    gradient: 'from-cyan-500/20 to-blue-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(123, 52, 44, 0.9), rgba(123, 52, 44, 0.8))',
   },
   {
     title: 'Smart Pins',
     description: 'AI-powered recs based on your vibe',
     icon: Sparkles,
     size: 'small',
-    gradient: 'from-yellow-500/20 to-orange-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(28, 77, 33, 0.9), rgba(28, 77, 33, 0.8))',
   },
   {
     title: 'Hidden Gems',
     description: 'Skip tourist traps, find local treasures',
     icon: Gem,
     size: 'small',
-    gradient: 'from-emerald-500/20 to-teal-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(26, 22, 61, 0.9), rgba(26, 22, 61, 0.8))',
   },
   {
     title: 'Live Map View',
     description: 'See every pin on an interactive globe',
     icon: MapPin,
     size: 'medium',
-    gradient: 'from-rose-500/20 to-orange-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(123, 52, 44, 0.9), rgba(123, 52, 44, 0.8))',
   },
   {
     title: 'Never Argue Again',
     description: 'End the "where should we eat?" debate instantly',
     icon: Gavel,
     size: 'medium',
-    gradient: 'from-amber-500/20 to-red-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(28, 77, 33, 0.9), rgba(28, 77, 33, 0.8))',
   },
   {
     title: 'Sweet Treat Fix',
     description: 'Find the closest place to get that sugar rush',
     icon: Candy,
     size: 'small',
-    gradient: 'from-pink-500/20 to-fuchsia-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(26, 22, 61, 0.9), rgba(26, 22, 61, 0.8))',
   },
   {
     title: 'Real-Time Alerts',
     description: "Get notified when you're near a wishlist spot",
     icon: Bell,
     size: 'small',
-    gradient: 'from-blue-500/20 to-violet-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(123, 52, 44, 0.9), rgba(123, 52, 44, 0.8))',
   },
   {
     title: 'Share Lists',
     description: 'Curate and share your perfect itinerary',
     icon: Share2,
     size: 'small',
-    gradient: 'from-indigo-500/20 to-purple-500/20',
+    gradient: '',
+    customGradient: 'linear-gradient(to bottom right, rgba(28, 77, 33, 0.9), rgba(28, 77, 33, 0.8))',
   },
 ];
 
@@ -86,11 +96,7 @@ const getSizeClasses = (size: string) => {
 export const FeaturesSection = forwardRef<HTMLElement>(function FeaturesSection(_, ref) {
   return (
     <section className="features-scene" ref={ref}>
-      <div className="features-sky" aria-hidden="true">
-        <div className="features-orb features-orb--left" />
-        <div className="features-orb features-orb--right" />
-        <div className="features-dots" />
-      </div>
+      <FeaturesBackground />
 
       <div className="features-content">
         <header className="features-header">
@@ -112,12 +118,14 @@ export const FeaturesSection = forwardRef<HTMLElement>(function FeaturesSection(
                 className={`
                   ${getSizeClasses(feature.size)}
                   relative overflow-hidden rounded-3xl
-                  bg-gradient-to-br ${feature.gradient}
-                  backdrop-blur-xl border border-white/10
+                  ${feature.customGradient ? '' : `bg-gradient-to-br ${feature.gradient}`}
+                  backdrop-blur-xl border border-white/40
                   p-6 md:p-8
                   group cursor-pointer
-                  hover:border-white/20 transition-all duration-300
+                  hover:border-white/60 transition-all duration-300
+                  shadow-lg hover:shadow-xl
                 `}
+                style={feature.customGradient ? { background: feature.customGradient } : {}}
                 key={feature.title}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -130,34 +138,38 @@ export const FeaturesSection = forwardRef<HTMLElement>(function FeaturesSection(
                 whileHover={{ scale: 1.02 }}
               >
                 {/* Background gradient orb */}
-                <div className={`
-                  absolute -right-8 -top-8 w-32 h-32
-                  bg-gradient-to-br ${feature.gradient}
-                  rounded-full blur-3xl opacity-30
-                  group-hover:opacity-50 transition-opacity duration-300
-                `} />
+                <div
+                  className={`
+                    absolute -right-8 -top-8 w-32 h-32
+                    ${feature.customGradient ? '' : `bg-gradient-to-br ${feature.gradient}`}
+                    rounded-full blur-3xl opacity-40
+                    group-hover:opacity-60 transition-opacity duration-300
+                  `}
+                  style={feature.customGradient ? { background: feature.customGradient } : {}}
+                />
 
                 {/* Content */}
                 <div className={`relative z-10 flex flex-col h-full ${isLarge ? 'justify-between' : 'justify-start'}`}>
                   <div className={`
                     ${isLarge ? 'w-16 h-16 md:w-20 md:h-20' : 'w-12 h-12'}
-                    rounded-2xl bg-white/10 backdrop-blur-sm
+                    rounded-2xl bg-white/80 backdrop-blur-sm
                     flex items-center justify-center
                     mb-4 group-hover:scale-110 transition-transform duration-300
+                    shadow-md
                   `}>
-                    <Icon className={`${isLarge ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6'} text-white`} />
+                    <Icon className={`${isLarge ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6'} text-gray-800`} />
                   </div>
 
                   <div>
                     <h3 className={`
                       ${isLarge ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl'}
-                      font-bold text-white mb-2
+                      font-bold text-white mb-2 drop-shadow-sm
                     `}>
                       {feature.title}
                     </h3>
                     <p className={`
                       ${isLarge ? 'text-base md:text-lg' : 'text-sm md:text-base'}
-                      text-gray-300 leading-relaxed
+                      text-white/90 leading-relaxed drop-shadow-sm
                     `}>
                       {feature.description}
                     </p>

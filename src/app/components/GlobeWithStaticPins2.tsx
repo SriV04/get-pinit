@@ -56,10 +56,9 @@ type DropType = {
 };
 
 const DROP_TYPES: DropType[] = [
-  { name: 'burger', emoji: '🍔', weight: 0.4 },
-  { name: 'disco', emoji: '🪩', weight: 0.2 },
-  { name: 'pint', emoji: '🍺', weight: 0.25 },
-  { name: 'tiktok', emoji: '🎵', imageSrc: '/tiktok-logo.png', weight: 0.15 },
+  { name: 'tiktok', emoji: '🎵', imageSrc: '/tiktok-logo.png', weight: 0.9 },
+  { name: 'instagram', emoji: '🎵', imageSrc: '/instagram.png', weight: 0.4 },
+
 ];
 
 const RESTAURANT_NAMES = [
@@ -86,7 +85,7 @@ const getRestaurantUrl = (name: string): string | null => {
 };
 
 const MAX_DROPS = 2;
-const GRAVITY = 720;
+const GRAVITY = 400;
 const DRAG = 0.12;
 const WIND_STRENGTH = 16;
 const ROTATION_SPEED = 0.12;
@@ -251,19 +250,19 @@ export function GlobeStaticPins2() {
     };
 
     const spawnDrop = (now: number) => {
-      const size = 28 + Math.random() * 18;
       const type = pickDropType();
+      const size = type.name === 'tiktok' ? 50 + Math.random() * 35 : 28 + Math.random() * 22;
       drops.push({
         id: now + Math.random(),
         type,
         x: width * (0.2 + Math.random() * 0.2),
-        y: -size,
-        vx: (Math.random() - 0.5) * 30,
-        vy: 20 + Math.random() * 40,
+        y: -size - 400,
+        vx: (Math.random() - 0.5) * 20,
+        vy: 10 + Math.random() * 20,
         radius: size * 0.5,
         size,
         rotation: Math.random() * Math.PI * 2,
-        spin: (Math.random() - 0.5) * 2.4,
+        spin: (Math.random() - 0.5) * 1.8,
         mass: 0.8 + Math.random() * 0.6,
         windPhase: Math.random() * Math.PI * 2,
       });
@@ -366,8 +365,12 @@ export function GlobeStaticPins2() {
 
       // Draw label above the pin
       ctx.save();
-      const labelY = screenY - baseSize * 1.2 * pop * hoverScale;
+      let labelY = screenY - baseSize * 1.2 * pop * hoverScale;
       const fontSize = Math.round(14 * (0.7 + z * 0.3) * hoverScale);
+      const minLabelY = fontSize + 10; // Ensure label stays within canvas bounds
+      if (labelY < minLabelY) {
+        labelY = minLabelY;
+      }
       ctx.font = `${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';

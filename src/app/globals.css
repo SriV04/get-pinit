@@ -246,8 +246,8 @@ body {
   position: relative;
   min-height: 100vh;
   scroll-snap-align: start;
-  background: linear-gradient(180deg, #2b0b3d 0%, #1a062a 100%);
-  color: #f7e9ff;
+  background: #fdfcfb;
+  color: #1a062a;
   padding: 10vh 8vw;
   overflow: hidden;
 }
@@ -309,11 +309,12 @@ body {
   margin-bottom: 1rem;
   font-weight: 600;
   line-height: 1.2;
+  color: #1a062a;
 }
 
 .features-header p {
   max-width: 620px;
-  color: rgba(236, 219, 255, 0.8);
+  color: rgba(26, 6, 42, 0.7);
   line-height: 1.6;
 }
 
@@ -568,6 +569,7 @@ body {
 
   .features-header h2 {
     font-size: clamp(2.5rem, 2.8vw, 3.5rem);
+    color: #1a062a;
   }
 
   .intro-skip-button {
@@ -656,6 +658,7 @@ body {
 
   .hero-content {
     width: clamp(400px, 48vw, 520px);
+    gap: clamp(1.2rem, 2vh, 1.6rem);
     top: 48%;
   }
 
@@ -668,7 +671,7 @@ body {
   }
 
   .hero-globe-container {
-    top: clamp(60vh, 65vh, 70vh);
+    top: clamp(58vh, 62vh, 66vh);
   }
 
   .pin-animation {
@@ -685,6 +688,7 @@ body {
 
   .hero-content {
     width: clamp(380px, 50vw, 510px);
+    gap: clamp(1.15rem, 1.9vh, 1.55rem);
     top: 47%;
   }
 }
@@ -697,7 +701,7 @@ body {
 
   .hero-content {
     width: clamp(360px, 54vw, 500px);
-    gap: clamp(0.9rem, 1.5vh, 1.2rem);
+    gap: clamp(1.1rem, 1.8vh, 1.5rem);
     top: 46%;
   }
 
@@ -712,7 +716,7 @@ body {
   }
 
   .hero-globe-container {
-    top: clamp(65vh, 70vh, 75vh);
+    top: clamp(60vh, 64vh, 68vh);
   }
 
   .pin-animation {
@@ -733,7 +737,7 @@ body {
 
   .hero-content {
     width: clamp(320px, 58vw, 460px);
-    gap: clamp(0.85rem, 1.4vh, 1.1rem);
+    gap: clamp(1.1rem, 1.7vh, 1.4rem);
     top: 45%;
   }
 
@@ -746,7 +750,7 @@ body {
   }
 
   .hero-globe-container {
-    top: clamp(68vh, 73vh, 78vh);
+    top: clamp(61vh, 65vh, 69vh);
   }
 
   .pin-animation {
@@ -782,7 +786,7 @@ body {
 
   .hero-content {
     width: clamp(280px, 70vw, 380px);
-    gap: clamp(0.8rem, 1.2vh, 1rem);
+    gap: clamp(1.2rem, 2vh, 1.6rem);
     top: 44%;
   }
 
@@ -802,7 +806,7 @@ body {
   }
 
   .hero-globe-container {
-    top: clamp(70vh, 75vh, 80vh);
+    top: clamp(62vh, 66vh, 70vh);
   }
 
   .pin-animation {
