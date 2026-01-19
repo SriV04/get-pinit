@@ -33,9 +33,22 @@ export function WaitlistCTA({
     }
 
     setStatus('submitting');
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    setStatus('success');
-    setEmail('');
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+      setStatus('success');
+      setEmail('');
+    } catch (error) {
+      console.error('Waitlist submission failed', error);
+      setStatus('idle');
+      setError('Something went wrong. Please try again.');
+    }
   };
 
   return (

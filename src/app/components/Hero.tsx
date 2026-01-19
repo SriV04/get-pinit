@@ -19,19 +19,36 @@ export function Hero({ onChevronClick }: HeroProps) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
+    setSubmitted(false);
 
     if (!EMAIL_REGEX.test(email)) {
       setError('Please enter a valid email address.');
       return;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    setSubmitted(true);
-    setEmail('');
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+      setSubmitted(true);
+      setEmail('');
+    } catch (error) {
+      console.error('Waitlist submission failed', error);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <section className="hero-scene">
@@ -73,19 +90,30 @@ export function Hero({ onChevronClick }: HeroProps) {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? errorId : undefined}
+                disabled={isSubmitting}
                 className="flex-1 bg-transparent px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base text-gray-100 placeholder-gray-500 outline-none min-w-0"
               />
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="bg-gradient-to-r from-[#42143d] to-[#6b2360] hover:from-[#5a1c51] hover:to-[#7d2c70] text-white rounded-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base transition-all duration-300 flex items-center gap-1.5 sm:gap-2 group/btn whitespace-nowrap shrink-0"
               >
-                <span className="hidden sm:inline">Join Waitlist</span>
-                <span className="sm:hidden">Join</span>
+                <span className="hidden sm:inline">
+                  {isSubmitting ? 'Joining…' : 'Join Waitlist'}
+                </span>
+                <span className="sm:hidden">{isSubmitting ? 'Joining…' : 'Join'}</span>
                 <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover/btn:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
 
+          {error && (
+            <p className="text-red-300 mt-3 sm:mt-4 text-sm sm:text-base text-center" id={errorId}>
+              {error}
+            </p>
+          )}
           {submitted && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
