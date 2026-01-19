@@ -49,7 +49,6 @@ export function AdjacentCards({ features, activeIndex, onFeatureClick, direction
           transition={{
             duration: 0.5,
             ease: [0.25, 0.1, 0.25, 1],
-            hover: { duration: 0.3 }
           }}
           style={{
             filter: 'blur(2px)',
@@ -79,7 +78,6 @@ export function AdjacentCards({ features, activeIndex, onFeatureClick, direction
           transition={{
             duration: 0.5,
             ease: [0.25, 0.1, 0.25, 1],
-            hover: { duration: 0.3 }
           }}
           style={{
             filter: 'blur(2px)',
