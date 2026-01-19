@@ -345,7 +345,8 @@ export function GlobeStaticPins2() {
 
       const screenX = centerX + x * radius;
       const screenY = centerY - y * radius;
-      const baseSize = 64 * (0.65 + z * 0.35);
+      const isDesktop = width >= 768;
+      const baseSize = (isDesktop ? 72 : 64) * (0.65 + z * 0.35);
       const age = Math.min(1, (now - pin.createdAt) / 280);
       const pop = 0.85 + 0.2 * Math.sin(age * Math.PI);
 
@@ -366,7 +367,7 @@ export function GlobeStaticPins2() {
       // Draw label above the pin
       ctx.save();
       let labelY = screenY - baseSize * 1.2 * pop * hoverScale;
-      const fontSize = Math.round(14 * (0.7 + z * 0.3) * hoverScale);
+      const fontSize = Math.round((isDesktop ? 16 : 14) * (0.7 + z * 0.3) * hoverScale);
       const minLabelY = fontSize + 10; // Ensure label stays within canvas bounds
       if (labelY < minLabelY) {
         labelY = minLabelY;
