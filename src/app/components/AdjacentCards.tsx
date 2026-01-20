@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'motion/react';
 import { LucideIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Feature {
   title: string;
@@ -19,6 +20,11 @@ interface AdjacentCardsProps {
 
 export function AdjacentCards({ features, activeIndex, onFeatureClick, direction }: AdjacentCardsProps) {
   const totalFeatures = features.length;
+  const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    setIsAndroid(/Android/i.test(navigator.userAgent));
+  }, []);
 
   // Calculate previous and next indices with wraparound
   const previousIndex = (activeIndex - 1 + totalFeatures) % totalFeatures;
@@ -54,7 +60,7 @@ export function AdjacentCards({ features, activeIndex, onFeatureClick, direction
             filter: 'blur(2px)',
           }}
         >
-          <AdjacentCard feature={previousFeature} />
+          <AdjacentCard feature={previousFeature} isAndroid={isAndroid} />
         </motion.div>
       </AnimatePresence>
 
@@ -83,21 +89,22 @@ export function AdjacentCards({ features, activeIndex, onFeatureClick, direction
             filter: 'blur(2px)',
           }}
         >
-          <AdjacentCard feature={nextFeature} />
+          <AdjacentCard feature={nextFeature} isAndroid={isAndroid} />
         </motion.div>
       </AnimatePresence>
     </>
   );
 }
 
-function AdjacentCard({ feature }: { feature: Feature }) {
+function AdjacentCard({ feature, isAndroid }: { feature: Feature; isAndroid: boolean }) {
   const Icon = feature.icon;
 
   return (
     <div
       className="w-[220px] lg:w-[260px] xl:w-[300px] 2xl:w-[340px] rounded-3xl border-2 border-black/10 shadow-xl p-4 lg:p-5 xl:p-6 bg-white"
       style={{
-        backdropFilter: 'blur(20px)',
+        backdropFilter: isAndroid ? 'none' : 'blur(20px)',
+        backgroundColor: isAndroid ? 'rgba(255, 255, 255, 0.98)' : undefined,
       }}
     >
       <div className="flex flex-col items-center text-center space-y-3 lg:space-y-4">

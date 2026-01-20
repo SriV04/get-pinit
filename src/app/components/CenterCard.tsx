@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'motion/react';
 import { LucideIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Feature {
   title: string;
@@ -18,9 +19,14 @@ interface CenterCardProps {
 
 export function CenterCard({ feature, index, direction }: CenterCardProps) {
   const Icon = feature.icon;
+  const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    setIsAndroid(/Android/i.test(navigator.userAgent));
+  }, []);
 
   return (
-    <AnimatePresence initial={false} custom={direction}>
+    <AnimatePresence initial={false} custom={direction} mode="wait">
       <motion.div
         key={index}
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
@@ -33,14 +39,19 @@ export function CenterCard({ feature, index, direction }: CenterCardProps) {
           boxShadow: "0 25px 50px -12px rgba(102, 126, 234, 0.4), 0 0 30px rgba(118, 75, 162, 0.3)",
         }}
         transition={{
-          duration: 0.5,
+          duration: 0.4,
           ease: [0.25, 0.1, 0.25, 1],
+          type: "tween",
+        }}
+        style={{
+          willChange: 'transform, opacity',
         }}
       >
         <motion.div
           className="w-[300px] sm:w-[340px] md:w-[380px] lg:w-[440px] xl:w-[500px] 2xl:w-[560px] rounded-3xl border-2 shadow-2xl p-6 md:p-7 lg:p-8 xl:p-9 bg-white"
           style={{
-            backdropFilter: 'blur(20px)',
+            backdropFilter: isAndroid ? 'none' : 'blur(20px)',
+            backgroundColor: isAndroid ? 'rgba(255, 255, 255, 0.98)' : undefined,
             borderColor: 'rgba(0, 0, 0, 0.1)',
           }}
           whileHover={{

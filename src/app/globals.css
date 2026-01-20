@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+/* Android Performance Optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Force hardware acceleration on animated elements */
+.features-scene,
+.hero-scene,
+canvas {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Optimize repaints */
+img, video, canvas {
+  image-rendering: -webkit-optimize-contrast;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -34,8 +53,17 @@ body {
 .snap-container {
   height: 100vh;
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity; /* Changed from mandatory for better Android performance */
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* iOS optimization */
+  overscroll-behavior-y: contain; /* Prevent over-scroll */
+}
+
+/* Android-specific: Use less aggressive snapping */
+@media (max-width: 1023px) {
+  .snap-container {
+    scroll-snap-type: y proximity;
+  }
 }
 
 .hero-scene {
@@ -250,6 +278,19 @@ body {
   color: #000000;
   padding: 4vh 4vw;
   overflow: hidden;
+  /* Android Performance: Smooth background transition */
+  transition: background-color 0.3s ease-out;
+  will-change: background-color;
+}
+
+/* Add smooth gradient overlay instead of hard white */
+.features-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #f8f8f8 0%, #ffffff 100%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .features-sky {
@@ -320,11 +361,7 @@ body {
   color: #000000;
 }
 
-.features-header p {
-  max-width: 800px;
-  color: rgba(0, 0, 0, 0.7);
-  line-height: 1.5;
-}
+/* Problem card text styling is now handled by Tailwind classes */
 
 .features-grid {
   display: grid;

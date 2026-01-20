@@ -23,6 +23,12 @@ export function CircularCarousel({ features }: CircularCarouselProps) {
   const [isPaused, setIsPaused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
+  const [isAndroid, setIsAndroid] = useState(false);
+
+  // Detect Android for performance optimizations
+  useEffect(() => {
+    setIsAndroid(/Android/i.test(navigator.userAgent));
+  }, []);
 
   // Auto-rotation with pause on hover
   useEffect(() => {
@@ -122,18 +128,19 @@ export function CircularCarousel({ features }: CircularCarouselProps) {
       aria-live="polite"
       aria-atomic="true"
       style={{
-        // 3D perspective for depth effect
-        perspective: '1800px',
+        // 3D perspective for depth effect - Disabled on Android for performance
+        perspective: isAndroid ? 'none' : '1800px',
         perspectiveOrigin: '50% 50%',
       }}
     >
-      {/* 3D Transform Container */}
+      {/* 3D Transform Container - Optimized for Android */}
       <div
         style={{
-          transformStyle: 'preserve-3d',
+          transformStyle: isAndroid ? 'flat' : 'preserve-3d',
           position: 'relative',
           width: '100%',
           height: '100%',
+          willChange: 'transform',
         }}
       >
         {/* Center Card */}

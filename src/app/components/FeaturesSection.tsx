@@ -66,14 +66,14 @@ export const FeaturesSection = forwardRef<HTMLElement>(function FeaturesSection(
         <header className="features-header flex-shrink-0 mt-4 md:mt-6 lg:mt-8">
           {/* Main Title */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black mb-12 md:mb-12 lg:mb-20 text-center">
-            Food is never worth settling for...
+            Never settle on a restaurant again
           </h1>
 
           {/* Problem Cards Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
             {PROBLEMS.map((problem, index) => (
               <div key={index} className="flex flex-col items-center text-center gap-1.5">
-                {/* Tick Icon */}
+                {/* Check Icon - Green ticks */}
                 <Check className="w-7 h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 text-green-600 stroke-[2.5]" />
                 {/* Problem Text */}
                 <p className="text-xs md:text-sm lg:text-base text-black/80 leading-tight">

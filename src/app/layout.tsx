@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
@@ -24,6 +24,14 @@ const geistMono = localFont({
   src: "../../Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf",
   variable: "--font-geist-mono",
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+};
 
 export const metadata: Metadata = {
   title: "Pinit - Never settle on a restaurant again",

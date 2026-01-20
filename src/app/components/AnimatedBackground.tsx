@@ -1,6 +1,26 @@
+'use client';
+
 import { motion } from 'motion/react';
+import { useEffect, useState, useMemo } from 'react';
 
 export function AnimatedBackground() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Generate random positions only on client to avoid hydration mismatch
+  const particles = useMemo(() => {
+    if (!isMounted) return [];
+    return Array.from({ length: 8 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 4 + Math.random() * 5,
+      delay: Math.random() * 6,
+    }));
+  }, [isMounted]);
+
   return (
     <div className="absolute inset-0 overflow-hidden bg-[#42143d]">
       {/* Gradient overlays for depth */}
@@ -41,13 +61,13 @@ export function AnimatedBackground() {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
 
       {/* Floating particles - reduced */}
-      {[...Array(8)].map((_, i) => (
+      {isMounted && particles.map((particle, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-white rounded-full"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${particle.left}%`,
+            top: `${particle.top}%`,
           }}
           animate={{
             y: [0, -80, 0],
@@ -55,9 +75,9 @@ export function AnimatedBackground() {
             scale: [0, 1.2, 0],
           }}
           transition={{
-            duration: 4 + Math.random() * 5,
+            duration: particle.duration,
             repeat: Infinity,
-            delay: Math.random() * 6,
+            delay: particle.delay,
             ease: "easeInOut"
           }}
         />

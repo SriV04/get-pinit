@@ -2,6 +2,7 @@
 
 import { motion } from 'motion/react';
 import { LucideIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface IconButtonProps {
   icon: LucideIcon;
@@ -28,6 +29,12 @@ export function IconButton({
   depthBlur,
   zIndex,
 }: IconButtonProps) {
+  const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    setIsAndroid(/Android/i.test(navigator.userAgent));
+  }, []);
+
   return (
     <motion.button
       onClick={onClick}
@@ -46,13 +53,17 @@ export function IconButton({
           )
           scale(${depthScale})
         `,
-        // Depth-of-field blur combined with grayscale
-        filter: `blur(${depthBlur}px) grayscale(${isActive ? 0 : 0.5})`,
+        // Android optimization: Use opacity instead of expensive filters
+        filter: isAndroid
+          ? (isActive ? 'none' : 'opacity(0.7)')
+          : `blur(${depthBlur}px) grayscale(${isActive ? 0 : 0.5})`,
         borderColor: isActive ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.1)',
-        boxShadow: isActive
-          ? '0 4px 20px rgba(0,0,0,0.15)'
-          : '0 2px 8px rgba(0,0,0,0.1)',
+        // Android optimization: Remove box-shadow for better performance
+        boxShadow: isAndroid
+          ? 'none'
+          : (isActive ? '0 4px 20px rgba(0,0,0,0.15)' : '0 2px 8px rgba(0,0,0,0.1)'),
         zIndex: zIndex,
+        willChange: 'transform',
       }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{

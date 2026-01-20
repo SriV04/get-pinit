@@ -587,7 +587,10 @@ export function GlobeStaticPins2() {
       ([entry]) => {
         isVisible = entry.isIntersecting;
       },
-      { threshold: 0.15 }
+      {
+        threshold: 0.01, // Very low threshold to ensure it starts on all screen sizes
+        rootMargin: '100px' // Start rendering before visible
+      }
     );
 
     observer.observe(canvas);
@@ -613,7 +616,11 @@ export function GlobeStaticPins2() {
       <canvas
         ref={cobeCanvasRef}
         className="absolute inset-0 size-full opacity-0 transition-opacity duration-500 [contain:layout_paint_size]"
-        style={{ cursor: 'grab' }}
+        style={{
+          cursor: 'grab',
+          willChange: 'transform',
+          transform: 'translate3d(0, 0, 0)',
+        }}
         onPointerDown={(event) => {
           pointerInteracting.current = event.clientX;
           updatePointerInteraction(event.clientX);
