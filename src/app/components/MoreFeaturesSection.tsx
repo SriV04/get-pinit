@@ -27,7 +27,7 @@ const GridItem = ({ icon, title, description, delay = 0, inView, reduced }: Grid
   >
     <div className="relative h-full rounded-2xl border border-[rgba(255,255,255,0.08)] p-2 md:rounded-3xl md:p-3">
       <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
-      <div className="relative flex h-full flex-col gap-3 overflow-hidden rounded-xl bg-[rgba(8,4,18,0.88)] p-6 shadow-[0px_0px_27px_0px_rgba(20,10,40,0.8)]">
+      <div className="relative flex h-full flex-col gap-2 overflow-hidden rounded-xl bg-[rgba(8,4,18,0.88)] p-4 md:p-5 shadow-[0px_0px_27px_0px_rgba(20,10,40,0.8)]">
         <div className="w-fit rounded-lg border border-[rgba(255,155,214,0.25)] bg-[rgba(255,155,214,0.07)] p-2">
           {icon}
         </div>
@@ -87,7 +87,7 @@ export function MoreFeaturesSection() {
       <StarBackground />
 
       <div className="section-content justify-center">
-        <div className="flex flex-col gap-6 w-full py-8 lg:py-12">
+        <div className="flex flex-col gap-[2vh] w-full py-[2vh]">
 
           {/* Header */}
           <div className="flex flex-col gap-3">
@@ -127,7 +127,7 @@ export function MoreFeaturesSection() {
           </div>
 
           {/* Bento grid: 3 columns on desktop, 2 on tablet, 1 on mobile */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
             {CARDS.map((card, i) => (
               <GridItem
                 key={card.title}
