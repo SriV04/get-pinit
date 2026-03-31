@@ -979,3 +979,322 @@ body {
     font-size: 0.9rem;
   }
 }
+
+/* =============================================
+   NEW SECTIONS — SHARED BASE
+   ============================================= */
+
+.section-dark {
+  position: relative;
+  height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  background: #42143d;
+  color: #f7e9ff;
+}
+
+.section-light {
+  position: relative;
+  height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  background: #ffffff;
+  color: #171717;
+}
+
+.section-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 4vh 4vw;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* =============================================
+   STAT CARDS — Problem Section
+   ============================================= */
+
+.stat-card {
+  padding: 2rem 1.5rem;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(88, 23, 128, 0.9), rgba(40, 9, 66, 0.85));
+  box-shadow: 0 18px 40px rgba(21, 3, 36, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stat-number {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 700;
+  color: #ff9bd6;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  color: rgba(247, 233, 255, 0.85);
+  line-height: 1.4;
+}
+
+/* =============================================
+   HOW IT WORKS — Steps
+   ============================================= */
+
+.step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  flex: 1;
+}
+
+.step-number {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #42143d, #6b2360);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.step-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255, 146, 208, 0.15), rgba(185, 131, 255, 0.15));
+  border: 1px solid rgba(107, 35, 96, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =============================================
+   VIBE ENGINE — Tag cloud
+   ============================================= */
+
+.vibe-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(88, 23, 128, 0.5);
+  border: 1px solid rgba(255, 155, 214, 0.25);
+  color: #f7e9ff;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-weight: 500;
+  backdrop-filter: blur(6px);
+  transition: all 0.25s ease;
+  cursor: default;
+}
+
+.vibe-tag:hover {
+  background: rgba(88, 23, 128, 0.8);
+  border-color: rgba(255, 155, 214, 0.5);
+  transform: scale(1.05);
+}
+
+.vibe-tag--highlight {
+  background: rgba(255, 155, 214, 0.15);
+  border-color: rgba(255, 155, 214, 0.5);
+  color: #ff9bd6;
+}
+
+/* =============================================
+   BUBBLES — Avatar cluster
+   ============================================= */
+
+.bubble-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, rgba(107, 35, 96, 0.12), rgba(185, 131, 255, 0.12));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #42143d;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(66, 20, 61, 0.18);
+}
+
+.bubble-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(107, 35, 96, 0.15);
+  animation: bubble-expand 3s ease-out infinite;
+}
+
+@keyframes bubble-expand {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* =============================================
+   TEAM CARDS
+   ============================================= */
+
+.team-card {
+  padding: 2rem;
+  border-radius: 24px;
+  background: rgba(88, 23, 128, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(21, 3, 36, 0.3);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  background: rgba(88, 23, 128, 0.6);
+  border-color: rgba(255, 155, 214, 0.3);
+}
+
+.team-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 146, 208, 0.3), rgba(185, 131, 255, 0.3));
+  border: 2px solid rgba(255, 155, 214, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff9bd6;
+  letter-spacing: 0.05em;
+}
+
+/* =============================================
+   WAITLIST CLOSING SECTION
+   ============================================= */
+
+.waitlist-scene {
+  position: relative;
+  height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =============================================
+   HOW IT WORKS — light scene + glass step cards
+   ============================================= */
+
+/* §4 style-match: subtle tinted gradient — more premium than flat white */
+.how-it-works-scene {
+  position: relative;
+  height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  background: linear-gradient(160deg, #ffffff 0%, #fdf5ff 60%, #f9eeff 100%);
+  color: #1a0524;
+}
+
+/* §4 elevation-consistent: glass card with defined shadow scale */
+.hiw-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(107, 35, 96, 0.1);
+  box-shadow:
+    0 2px 8px rgba(66, 20, 61, 0.06),
+    0 8px 24px rgba(66, 20, 61, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: default;
+}
+
+.hiw-step-number {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(107, 35, 96, 0.45);
+}
+
+.hiw-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 146, 208, 0.14), rgba(185, 131, 255, 0.14));
+  border: 1px solid rgba(107, 35, 96, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =============================================
+   BUBBLES — light scene
+   ============================================= */
+
+.bubbles-scene {
+  position: relative;
+  height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  background: linear-gradient(160deg, #ffffff 0%, #fdf5ff 60%, #f9eeff 100%);
+  color: #1a0524;
+}
+
+/* =============================================
+   RESPONSIVE — new sections
+   ============================================= */
+
+@media (max-width: 1023px) {
+  .section-content {
+    padding: 3vh 5vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-content {
+    padding: 3vh 6vw;
+  }
+  .stat-number {
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+  }
+  .team-avatar {
+    width: 72px;
+    height: 72px;
+  }
+  .hiw-card {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+/* §7 reduced-motion: honour system preference */
+@media (prefers-reduced-motion: reduce) {
+  .bubble-ring {
+    animation: none;
+    opacity: 0.2;
+  }
+}
