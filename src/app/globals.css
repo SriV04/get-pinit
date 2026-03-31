@@ -1276,9 +1276,18 @@ body {
 }
 
 @media (max-width: 768px) {
-  .section-content {
-    padding: 3vh 6vw;
+  /* Allow sections to grow taller than viewport on mobile instead of clipping */
+  .section-dark,
+  .section-light {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
   }
+
+  .section-content {
+    padding: 4vh 5vw;
+  }
+
   .stat-number {
     font-size: clamp(2.2rem, 10vw, 3.5rem);
   }
@@ -1289,12 +1298,186 @@ body {
   .hiw-card {
     padding: 1.5rem 1.25rem;
   }
+
+  /* Phone mockup: much bigger on mobile (22vw ≈ 82px on 375px screen) */
+  .phone-mockup {
+    width: clamp(140px, 44vw, 200px);
+  }
+}
+
+/* =============================================
+   STAT CARDS — light variant
+   ============================================= */
+
+.stat-card--light {
+  padding: 2rem 1.5rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(66, 20, 61, 0.06), 0 8px 28px rgba(66, 20, 61, 0.09);
+  border: 1px solid rgba(107, 35, 96, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: default;
+}
+
+.stat-number--light {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 700;
+  color: #6b2360;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label--light {
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  color: rgba(26, 5, 36, 0.65);
+  line-height: 1.5;
+}
+
+/* =============================================
+   HOW IT WORKS — dark card variant
+   ============================================= */
+
+.hiw-card--dark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  background: rgba(88, 23, 128, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(21, 3, 36, 0.3), 0 1px 4px rgba(21, 3, 36, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: default;
+}
+
+/* =============================================
+   VIBE TAGS — light variant
+   ============================================= */
+
+.vibe-tag--light {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(107, 35, 96, 0.18);
+  color: #42143d;
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+  font-weight: 500;
+  backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.vibe-tag--light:hover {
+  background: rgba(107, 35, 96, 0.08);
+  border-color: rgba(107, 35, 96, 0.3);
+  transform: scale(1.05);
+}
+
+.vibe-tag--light-highlight {
+  background: rgba(107, 35, 96, 0.1);
+  border-color: rgba(107, 35, 96, 0.3);
+  color: #6b2360;
+  font-weight: 600;
+}
+
+/* =============================================
+   BUBBLES — dark variant avatars & rings
+   ============================================= */
+
+.bubble-avatar--dark {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(88, 23, 128, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  backdrop-filter: blur(6px);
+}
+
+.bubble-ring--dark {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 155, 214, 0.12);
+  animation: bubble-expand 3s ease-out infinite;
+}
+
+/* =============================================
+   CANVAS TEXT — shimmer animation
+   ============================================= */
+
+@keyframes canvas-text-shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.canvas-text-shimmer {
+  animation: canvas-text-shimmer var(--shimmer-duration, 20s) linear infinite;
+}
+
+/* =============================================
+   PHONE MOCKUP
+   ============================================= */
+
+.phone-mockup {
+  position: relative;
+  width: clamp(180px, 22vw, 260px);
+  aspect-ratio: 9 / 19.5;
+  border-radius: 36px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 8px rgba(255, 255, 255, 0.12),
+    0 0 0 9px rgba(255, 255, 255, 0.06),
+    0 30px 70px rgba(0, 0, 0, 0.45),
+    0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.phone-mockup-light {
+  box-shadow:
+    0 0 0 8px rgba(107, 35, 96, 0.12),
+    0 0 0 9px rgba(107, 35, 96, 0.06),
+    0 30px 70px rgba(66, 20, 61, 0.2),
+    0 10px 30px rgba(66, 20, 61, 0.12);
+}
+
+/* §7a marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 18s linear infinite;
 }
 
 /* §7 reduced-motion: honour system preference */
 @media (prefers-reduced-motion: reduce) {
-  .bubble-ring {
+  .bubble-ring,
+  .bubble-ring--dark {
     animation: none;
-    opacity: 0.2;
+    opacity: 0.15;
+  }
+  .canvas-text-shimmer {
+    animation: none;
+  }
+  .marquee-track {
+    animation: none;
   }
 }

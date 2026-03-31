@@ -2,133 +2,156 @@
 
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'motion/react';
-import { Share2, Sparkles, Bell, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { Share2, Sparkles, Bell } from 'lucide-react';
+import { AnimatedBackground } from './AnimatedBackground';
+import { CanvasText } from '@/components/ui/canvas-text';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
 
-// §4 style-match: clean light section — no heavy particle bg for investor readability
-// §6 whitespace-balance: generous spacing between elements
+interface GridItemProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  delay?: number;
+  inView: boolean;
+  reduced: boolean;
+}
 
-const STEPS = [
-  {
-    number: '01',
-    icon: Share2,
-    title: 'Share',
-    description:
-      'See a restaurant on Instagram or TikTok? Share the reel directly to Pinit. No more saving posts and forgetting.',
-  },
-  {
-    number: '02',
-    icon: Sparkles,
-    title: 'Build',
-    description:
-      'We extract the location and vibes automatically. The more you share and like, the better we understand your taste.',
-  },
-  {
-    number: '03',
-    icon: Bell,
-    title: 'Discover',
-    description:
-      "Get notified the moment you're near a restaurant you've saved. The right place, surfaced at exactly the right time.",
-  },
-];
+const GridItem = ({ icon, title, description, delay = 0, inView, reduced }: GridItemProps) => (
+  <motion.div
+    className="flex-1"
+    {...(reduced ? {} : {
+      initial: { opacity: 0, y: 20 },
+      animate: inView ? { opacity: 1, y: 0 } : {},
+      transition: { duration: 0.45, delay, ease: 'easeOut' },
+    })}
+  >
+    <div className="relative h-full rounded-2xl border border-[rgba(255,255,255,0.08)] p-2 md:rounded-3xl md:p-3">
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+      <div className="relative flex h-full flex-col justify-between gap-3 overflow-hidden rounded-xl bg-[rgba(8,4,18,0.88)] p-5 md:p-7 shadow-[0px_0px_27px_0px_rgba(20,10,40,0.8)]">
+        <div className="w-fit rounded-xl border border-[rgba(255,155,214,0.25)] bg-[rgba(255,155,214,0.07)] p-2 md:p-3">
+          {icon}
+        </div>
+        <div className="flex flex-col gap-2 flex-1 justify-end">
+          <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-[#f7e9ff] leading-snug">
+            {title}
+          </h3>
+          <p className="text-xs md:text-base lg:text-lg text-[rgba(247,233,255,0.6)] leading-relaxed">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
 
 export function HowItWorksSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { once: true, amount: 0.25 });
+  const inView = useInView(sectionRef, { once: true, amount: 0.15 });
   const reduced = useReducedMotion() ?? false;
 
   return (
-    // §4 style-match: subtle gradient — not flat white, not heavy particles
-    <section
-      className="how-it-works-scene"
-      ref={sectionRef}
-      aria-label="How Pinit works"
-    >
-      <div className="section-content justify-center items-center gap-6 md:gap-10">
-        {/* Badge */}
-        <motion.div
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(107,35,96,0.09)] border border-[rgba(107,35,96,0.18)] text-[#42143d] text-xs font-semibold uppercase tracking-[0.15em]"
-          {...(reduced ? {} : {
-            initial: { opacity: 0, y: -12 },
-            animate: inView ? { opacity: 1, y: 0 } : {},
-            transition: { duration: 0.35, ease: 'easeOut' },
-          })}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#6b2360]" />
-          How It Works
-        </motion.div>
+    <section className="section-dark" ref={sectionRef} aria-label="How Pinit works">
+      <AnimatedBackground />
 
-        {/* §6 weight-hierarchy: large bold heading */}
-        <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold text-[#1a0524] text-center max-w-2xl leading-tight"
-          {...(reduced ? {} : {
-            initial: { opacity: 0, y: 20 },
-            animate: inView ? { opacity: 1, y: 0 } : {},
-            transition: { duration: 0.4, delay: 0.06, ease: "easeOut" },
-          })}
-        >
-          Three steps to your next favourite restaurant
-        </motion.h2>
+      <div className="section-content justify-center">
+        <div className="flex flex-col gap-6 w-full py-8 lg:py-12">
 
-        {/* §5 layout: horizontal on md+, vertical stack on mobile */}
-        <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-3 w-full max-w-4xl">
-          {STEPS.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <div key={i} className="flex flex-col md:flex-row items-center flex-1 min-w-0">
-                {/* §4 elevation-consistent: glass card with border + shadow */}
-                <motion.div
-                  className="hiw-card flex-1 w-full"
-                  {...(reduced ? {} : {
-                    initial: { opacity: 0, y: 28 },
-                    animate: inView ? { opacity: 1, y: 0 } : {},
-                    transition: { duration: 0.4, delay: 0.12 + i * 0.04, ease: "easeOut" },
-                  })}
-                  // §7 scale-feedback + §2 press-feedback: spring hover
-                  whileHover={reduced ? {} : {
-                    y: -4,
-                    transition: { type: 'spring', stiffness: 400, damping: 22 },
-                  }}
-                >
-                  {/* §6 weight-hierarchy: step number as small label */}
-                  <span className="hiw-step-number">{step.number}</span>
+          {/* Header */}
+          <div className="flex flex-col gap-3">
+            <motion.div
+              className="waitlist-badge self-start"
+              {...(reduced ? {} : {
+                initial: { opacity: 0, y: -12 },
+                animate: inView ? { opacity: 1, y: 0 } : {},
+                transition: { duration: 0.35, ease: 'easeOut' },
+              })}
+            >
+              <span className="waitlist-badge-dot" />
+              How It Works
+            </motion.div>
 
-                  {/* Icon container */}
-                  <motion.div
-                    className="hiw-icon-wrap"
-                    whileHover={reduced ? {} : {
-                      scale: 1.08,
-                      rotate: -4,
-                      transition: { type: 'spring', stiffness: 350 },
-                    }}
-                    aria-hidden="true"
-                  >
-                    <Icon className="w-7 h-7 text-[#6b2360]" />
-                  </motion.div>
+            <motion.h2
+              className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#f7e9ff] leading-tight"
+              {...(reduced ? {} : {
+                initial: { opacity: 0, y: 20 },
+                animate: inView ? { opacity: 1, y: 0 } : {},
+                transition: { duration: 0.4, delay: 0.06, ease: 'easeOut' },
+              })}
+            >
+              Three steps to your{' '}
+              <CanvasText
+                text="next favourite"
+                colors={[
+                  'rgba(255, 155, 214, 1)',
+                  'rgba(220, 130, 255, 0.9)',
+                  'rgba(255, 155, 214, 0.8)',
+                  'rgba(200, 110, 255, 0.9)',
+                  'rgba(255, 155, 214, 1)',
+                ]}
+                animationDuration={10}
+              />
+              {' '}restaurant
+            </motion.h2>
+          </div>
 
-                  {/* Text — §6: 500 medium for title, 400 regular for body, 1.6 line-height */}
-                  <h3 className="text-lg md:text-xl font-bold text-[#1a0524] mt-1">{step.title}</h3>
-                  <p className="text-sm md:text-base text-[#1a0524]/60 leading-relaxed max-w-[200px]">
-                    {step.description}
-                  </p>
-                </motion.div>
+          {/* 2-column grid: left = Share + Discover, right = Build + phone */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
 
-                {/* §5 connector: only between cards, desktop only */}
-                {i < STEPS.length - 1 && (
-                  <motion.div
-                    className="hidden md:flex items-center justify-center flex-shrink-0 px-1"
-                    aria-hidden="true"
-                    {...(reduced ? {} : {
-                      initial: { opacity: 0 },
-                      animate: inView ? { opacity: 1 } : {},
-                      transition: { duration: 0.3, delay: 0.28 + i * 0.04 },
-                    })}
-                  >
-                    <ArrowRight className="w-5 h-5 text-[#6b2360]/30" />
-                  </motion.div>
-                )}
-              </div>
-            );
-          })}
+            {/* Left column: Share + Discover stacked */}
+            <div className="flex flex-col gap-4">
+              <GridItem
+                icon={<Share2 className="h-6 w-6 text-[#ff9bd6]" />}
+                title="Share"
+                description="See a cool restaurant? Swap that save button to a share to your Pinit profile with a tap. We extract the location and pin it to your map. As you share we build up your taste or
+                and all your saved places in one map when you need them"
+                delay={0.1}
+                inView={inView}
+                reduced={reduced}
+              />
+              <GridItem
+                icon={<Bell className="h-6 w-6 text-[#ff9bd6]" />}
+                title="Discover"
+                description="Get notified the moment you're near a restaurant you've saved, or one that matches your taste profile. No more endless scrolling or FOMO. Just the right places, at the right time."
+                delay={0.2}
+                inView={inView}
+                reduced={reduced}
+              />
+            </div>
+
+            {/* Right column: Build card + phone mockup stacked */}
+            <div className="flex flex-col gap-4">
+              <GridItem
+                icon={<Sparkles className="h-6 w-6 text-[#ff9bd6]" />}
+                title="Build Your Taste Profile"
+                description="We extract the location and vibes across 26 dimensions. The more you share, the better we know your taste."
+                delay={0.15}
+                inView={inView}
+                reduced={reduced}
+              />
+
+              <motion.div
+                className="flex justify-center"
+                {...(reduced ? {} : {
+                  initial: { opacity: 0, y: 20 },
+                  animate: inView ? { opacity: 1, y: 0 } : {},
+                  transition: { duration: 0.5, delay: 0.25, ease: 'easeOut' },
+                })}
+              >
+                <div className="phone-mockup">
+                  <Image
+                    src="/share-screen2.png"
+                    alt="Pinit app share screen"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 180px, 260px"
+                  />
+                </div>
+              </motion.div>
+            </div>
+
+          </div>
+
         </div>
       </div>
     </section>

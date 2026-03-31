@@ -1,32 +1,24 @@
 'use client';
 
-import { useRef } from 'react';
 import { Hero } from '@/app/components/Hero';
-import { FeaturesSection } from '@/app/components/FeaturesSection';
 import { ProblemSection } from '@/app/components/ProblemSection';
 import { HowItWorksSection } from '@/app/components/HowItWorksSection';
 import { VibeEngineSection } from '@/app/components/VibeEngineSection';
 import { BubblesSection } from '@/app/components/BubblesSection';
+import { MoreFeaturesSection } from '@/app/components/MoreFeaturesSection';
 import { TeamSection } from '@/app/components/TeamSection';
-import { WaitlistSection } from '@/app/components/WaitlistSection';
+
 
 export default function Home() {
-  const featuresRef = useRef<HTMLElement | null>(null);
-
-  const handleChevronClick = () => {
-    featuresRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <main className="snap-container">
-      <Hero onChevronClick={handleChevronClick} />
-      <FeaturesSection ref={featuresRef} />
+      <Hero onChevronClick={() => {}} />
       <ProblemSection />
       <HowItWorksSection />
       <VibeEngineSection />
       <BubblesSection />
+      <MoreFeaturesSection />
       <TeamSection />
-      <WaitlistSection />
     </main>
   );
 }

@@ -2,167 +2,78 @@
 
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'motion/react';
-import { User } from 'lucide-react';
 import Image from 'next/image';
 import { AnimatedBackground } from './AnimatedBackground';
 
-interface ExperienceBadge {
-  name: string;
-  /** Tailwind bg + text colour classes for the badge */
-  style: string;
-}
-
-interface TeamMember {
-  name: string;
-  role: string;
-  bio: string;
-  initials: string;
-  photoSrc: string | null;
-  linkedin: string | null;
-  education: string;
-  experience: ExperienceBadge[];
-}
-
-// §6 weight-hierarchy: credentials visible at a glance — critical for investors
-const TEAM: TeamMember[] = [
-  {
-    name: 'Shlok Shah',
-    role: 'Co-Founder',
-    bio: 'Building the agentic AI system that powers Pinit\'s vibe engine — extracting and quantifying restaurant vibes at scale.',
-    initials: 'SS',
-    photoSrc: null,
-    linkedin: null,
-    education: 'MEng Computing (AI & ML) · Imperial College London',
-    experience: [
-      { name: 'HubSpot', style: 'bg-[#FF7A59]/15 text-[#FF7A59]' },
-      { name: 'incident.io', style: 'bg-[rgba(255,155,214,0.15)] text-[#ff9bd6]' },
-    ],
-  },
-  {
-    name: 'Sriharsha Vitta',
-    role: 'Co-Founder',
-    bio: 'Architecting the infrastructure that makes Pinit scale — from real-time location alerts to group vibe matching.',
-    initials: 'SV',
-    photoSrc: null,
-    linkedin: null,
-    education: 'BSc Maths & Computing · Imperial College London',
-    experience: [
-      { name: 'BlackRock', style: 'bg-[rgba(255,255,255,0.1)] text-[rgba(247,233,255,0.8)]' },
-      { name: 'Palantir', style: 'bg-[rgba(100,180,255,0.15)] text-[#90c8f8]' },
-    ],
-  },
-];
-
 export function TeamSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { once: true, amount: 0.25 });
+  const inView = useInView(sectionRef, { once: true, amount: 0.2 });
   const reduced = useReducedMotion() ?? false;
+
+  const anim = (delay = 0) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          animate: inView ? { opacity: 1, y: 0 } : {},
+          transition: { duration: 0.45, delay, ease: 'easeOut' },
+        };
 
   return (
     <section className="section-dark" ref={sectionRef} aria-label="The founding team">
       <AnimatedBackground />
 
-      <div className="section-content justify-center items-center gap-7 md:gap-10">
+      <div className="section-content justify-center items-center gap-5 md:gap-10 max-w-5xl mx-auto px-6 text-center">
         {/* Badge */}
-        <motion.div
-          className="waitlist-badge"
-          {...(reduced ? {} : {
-            initial: { opacity: 0, y: -12 },
-            animate: inView ? { opacity: 1, y: 0 } : {},
-            transition: { duration: 0.35, ease: 'easeOut' },
-          })}
-        >
+        <motion.div className="waitlist-badge" {...anim(0)}>
           <span className="waitlist-badge-dot" />
           The Team
         </motion.div>
 
-        {/* §6 weight-hierarchy: bold large heading */}
+        {/* Heading */}
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold text-center max-w-3xl leading-tight"
-          {...(reduced ? {} : {
-            initial: { opacity: 0, y: 20 },
-            animate: inView ? { opacity: 1, y: 0 } : {},
-            transition: { duration: 0.4, delay: 0.06, ease: "easeOut" },
-          })}
+          className="text-4xl md:text-5xl lg:text-6xl xl:text-[4rem] font-bold leading-tight"
+          {...anim(0.07)}
         >
-          Built by people who are tired of the group chat too
+          <em style={{ fontStyle: 'italic' }}>Built by</em>{' '}
+          people tired of mediocre spots
         </motion.h2>
 
-        {/* §5 container-width: max-w-2xl for 2 cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6 w-full max-w-2xl">
-          {TEAM.map((member, i) => (
-            <motion.div
-              key={member.name}
-              className="team-card"
-              {...(reduced ? {} : {
-                initial: { opacity: 0, y: 40 },
-                animate: inView ? { opacity: 1, y: 0 } : {},
-                transition: { duration: 0.4, delay: 0.14 + i * 0.04, ease: "easeOut" },
-              })}
-              // §7 scale-feedback: spring lift on hover
-              whileHover={reduced ? {} : {
-                y: -6,
-                transition: { type: 'spring', stiffness: 350, damping: 22 },
-              }}
-            >
-              {/* Avatar */}
-              <div className="team-avatar" role="img" aria-label={`${member.name} photo`}>
-                {member.photoSrc ? (
-                  <Image
-                    src={member.photoSrc}
-                    alt={member.name}
-                    width={96}
-                    height={96}
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <User className="w-10 h-10 text-[#ff9bd6]" aria-hidden="true" />
-                )}
+        {/* Story */}
+        <motion.p
+          className="text-lg md:text-xl text-[rgba(247,233,255,0.65)] leading-relaxed max-w-2xl"
+          {...anim(0.14)}
+        >
+          Shlok and Sri both moved to London from smaller cities, excited about
+          discovering trendy new restaurants in the capital. Overwhelmed by the
+          abundance they often settled on mediocrity. Tired of this, they built
+          Pinit.
+        </motion.p>
+
+        {/* Photos */}
+        <motion.div
+          className="grid grid-cols-2 gap-6 md:gap-10 w-full max-w-2xl"
+          {...anim(0.22)}
+        >
+          {[
+            { src: '/shlok.jpeg', name: 'Shlok Shah', position: 'object-[center_30%]' },
+            { src: '/sri.jpeg', name: 'Sriharsha Vitta', position: 'object-center' },
+          ].map(({ src, name, position }) => (
+            <div key={name} className="flex flex-col items-center gap-4">
+              <div className="w-full aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10">
+                <Image
+                  src={src}
+                  alt={name}
+                  width={600}
+                  height={600}
+                  className={`object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500 ${position}`}
+                />
               </div>
-
-              {/* Name + role — §6: bold name, pink accent role */}
-              <div className="flex flex-col items-center gap-0.5">
-                <p className="text-lg font-bold text-white leading-snug">{member.name}</p>
-                <p className="text-sm font-medium text-[#ff9bd6]">{member.role}</p>
-              </div>
-
-              {/* Education — §6: muted secondary text */}
-              <p className="text-xs text-[rgba(247,233,255,0.45)] text-center leading-snug px-2">
-                {member.education}
-              </p>
-
-              {/* Experience badges — critical investor-facing credential display */}
-              <div className="flex flex-wrap gap-2 justify-center" aria-label={`${member.name}'s previous experience`}>
-                {member.experience.map((badge) => (
-                  <span
-                    key={badge.name}
-                    className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold ${badge.style}`}
-                  >
-                    {badge.name}
-                  </span>
-                ))}
-              </div>
-
-              {/* Bio — §6: 14px secondary, 1.6 line-height */}
-              <p className="text-sm text-[rgba(247,233,255,0.62)] leading-relaxed text-center">
-                {member.bio}
-              </p>
-
-              {/* LinkedIn link */}
-              {member.linkedin && (
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${member.name} on LinkedIn`}
-                  className="text-[rgba(247,233,255,0.4)] hover:text-[#ff9bd6] transition-colors duration-200 text-xs underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff9bd6] rounded"
-                >
-                  LinkedIn ↗
-                </a>
-              )}
-            </motion.div>
+              <p className="text-base md:text-lg font-semibold text-[rgba(247,233,255,0.85)]">{name}</p>
+              <p className="text-sm md:text-base text-[rgba(247,233,255,0.4)]">Co-Founder</p>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

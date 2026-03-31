@@ -1,7 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 const robotoCondensed = localFont({
   src: [
@@ -72,7 +80,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${robotoCondensed.variable} ${geistMono.variable} antialiased`}
+        className={`${robotoCondensed.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased`}
       >
         {children}
         <Analytics />
