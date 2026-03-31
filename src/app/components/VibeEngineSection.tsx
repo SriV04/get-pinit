@@ -26,13 +26,13 @@ const VIBES = [
 
 export function VibeEngineSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const inView = useInView(sectionRef, { once: true, amount: 0.05 });
   const reduced = useReducedMotion() ?? false;
 
-  const enter = (delay = 0) => ({
-    initial: { opacity: 0, y: reduced ? 0 : 24 },
-    animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: reduced ? 0 : 24 },
-    transition: { duration: reduced ? 0 : 0.4, delay: reduced ? 0 : delay },
+  const enter = (delay = 0) => reduced ? {} : ({
+    initial: { y: 24 },
+    animate: { y: 0 },
+    transition: { duration: 0.4, delay },
   });
 
   return (
@@ -44,16 +44,16 @@ export function VibeEngineSection() {
     >
       <StarBackground />
 
-      <div className="section-content justify-center">
-        <div className="flex flex-col lg:flex-row items-center gap-5 lg:gap-14 h-full py-6 lg:py-0 w-full">
+      <div className="section-content lg:justify-center">
+        <div className="flex flex-row items-center gap-4 lg:gap-14 lg:h-full py-4 lg:py-0 w-full">
 
-          {/* Left: text + tags + 26 stat */}
-          <div className="flex flex-col gap-5 flex-1 min-w-0">
+          {/* Left: text + tags + 26 stat + phone on mobile */}
+          <div className="flex flex-col gap-5 w-full lg:flex-1 min-w-0">
             <motion.div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(255,155,214,0.25)] bg-[rgba(255,155,214,0.07)] text-[#ff9bd6] text-xs font-semibold uppercase tracking-[0.15em] self-start"
               {...(reduced ? {} : {
-                initial: { opacity: 0, y: -12 },
-                animate: inView ? { opacity: 1, y: 0 } : {},
+                initial: { y: -12 },
+                animate: { y: 0 },
                 transition: { duration: 0.35, ease: 'easeOut' },
               })}
             >
@@ -111,8 +111,8 @@ export function VibeEngineSection() {
             <motion.div
               className="self-center mt-2 lg:mt-4"
               {...(reduced ? {} : {
-                initial: { opacity: 0, scale: 0.9 },
-                animate: inView ? { opacity: 1, scale: 1 } : {},
+                initial: { scale: 0.9 },
+                animate: { scale: 1 },
                 transition: { duration: 0.35, delay: 0.4, ease: 'backOut' },
               })}
             >
@@ -126,24 +126,44 @@ export function VibeEngineSection() {
                 <span className="text-xs text-[rgba(247,233,255,0.7)] text-center">vibe dimensions per restaurant</span>
               </NoiseBackground>
             </motion.div>
+
+            {/* Phone mockup — below stat on mobile, hidden on desktop (shown in right col) */}
+            <motion.div
+              className="flex lg:hidden justify-center"
+              {...(reduced ? {} : {
+                initial: { scale: 0.9 },
+                animate: { scale: 1 },
+                transition: { duration: 0.4, delay: 0.2 },
+              })}
+            >
+              <div className="phone-mockup" style={{ width: 'clamp(80px, 22vw, 140px)' }}>
+                <Image
+                  src="/explore.jpeg"
+                  alt="Pinit app explore screen"
+                  fill
+                  className="object-cover"
+                  sizes="140px"
+                />
+              </div>
+            </motion.div>
           </div>
 
-          {/* Right: phone mockup */}
+          {/* Right: phone mockup — desktop only */}
           <motion.div
-            className="flex-shrink-0 flex items-center justify-center"
+            className="hidden lg:flex flex-shrink-0 items-center justify-center"
             {...(reduced ? {} : {
-              initial: { opacity: 0, x: 32 },
-              animate: inView ? { opacity: 1, x: 0 } : {},
+              initial: { x: 32 },
+              animate: { x: 0 },
               transition: { duration: 0.5, delay: 0.15, ease: 'easeOut' },
             })}
           >
-            <div className="phone-mockup">
+            <div className="phone-mockup" style={{ width: 'clamp(160px, 22vw, 260px)' }}>
               <Image
                 src="/explore.jpeg"
                 alt="Pinit app explore screen"
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 180px, 260px"
+                sizes="260px"
               />
             </div>
           </motion.div>
