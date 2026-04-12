@@ -103,8 +103,8 @@ export function HowItWorksSection() {
               <GridItem
                 icon={<Share2 className="h-4 w-4 text-[#ff9bd6]" />}
                 title="Share"
-                description="See a cool restaurant? Swap that save button to a share to your Pinit profile with a tap. We extract the location and pin it to your map. As you share we build up your taste or
-                and all your saved places in one map when you need them"
+                description="See a cool restaurant? Swap that save to a share to Pinit. We extract the location and pin it to your map. As you share, we learn your taste profile
+                and collate all your saved places in one map accessible to you whenever you need them."
                 delay={0.1}
                 inView={inView}
                 reduced={reduced}
