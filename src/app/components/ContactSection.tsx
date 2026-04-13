@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useId, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, Mail, MessageSquare, Send } from 'lucide-react';
@@ -246,6 +247,24 @@ export function ContactSection() {
                 Message sent. We&apos;ll be in touch shortly.
               </p>
             )}
+
+            <div className="mt-6 border-t border-white/10 pt-4 text-sm text-[rgba(247,233,255,0.58)]">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <span>Legal</span>
+                <Link
+                  href="/privacy-policy"
+                  className="text-[#ffd8ea] transition hover:text-white"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/terms-and-conditions"
+                  className="text-[#ffd8ea] transition hover:text-white"
+                >
+                  Terms &amp; Conditions
+                </Link>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
