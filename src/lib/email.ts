@@ -25,14 +25,28 @@ const getTransporter = () => {
   });
 };
 
-/**
- * Sends internal notification about new waitlist signup
- */
-export const sendWaitlistNotification = async (email: string) => {
+const getSender = () => {
   const from = process.env.SMTP_FROM ?? process.env.SMTP_USER;
   if (!from) {
     throw new Error('Missing SMTP_FROM or SMTP_USER env var');
   }
+  return from;
+};
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\n/g, '<br />');
+
+/**
+ * Sends internal notification about new waitlist signup
+ */
+export const sendWaitlistNotification = async (email: string) => {
+  const from = getSender();
   const to = process.env.WAITLIST_TO ?? from;
   const transporter = getTransporter();
 
@@ -49,10 +63,7 @@ export const sendWaitlistNotification = async (email: string) => {
  * Sends welcome email to the user who joined the waitlist
  */
 export const sendWaitlistWelcomeEmail = async (email: string) => {
-  const from = process.env.SMTP_FROM ?? process.env.SMTP_USER;
-  if (!from) {
-    throw new Error('Missing SMTP_FROM or SMTP_USER env var');
-  }
+  const from = getSender();
   const transporter = getTransporter();
 
   // Read the HTML email template
@@ -83,3 +94,30 @@ export const sendWaitlistWelcomeEmail = async (email: string) => {
  * @deprecated Use sendWaitlistNotification or sendWaitlistWelcomeEmail instead
  */
 export const sendWaitlistEmail = sendWaitlistNotification;
+
+type ContactEmailInput = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+export const sendContactEmail = async ({ name, email, message }: ContactEmailInput) => {
+  const from = getSender();
+  const to = process.env.CONTACT_TO ?? process.env.WAITLIST_TO ?? from;
+  const transporter = getTransporter();
+
+  await transporter.sendMail({
+    from,
+    to,
+    replyTo: email,
+    subject: `New contact form message from ${name}`,
+    text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+    html: `
+      <p><strong>New contact form message</strong></p>
+      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Message:</strong></p>
+      <p>${escapeHtml(message)}</p>
+    `,
+  });
+};

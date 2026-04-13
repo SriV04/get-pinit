@@ -7,6 +7,7 @@ import { VibeEngineSection } from '@/app/components/VibeEngineSection';
 import { BubblesSection } from '@/app/components/BubblesSection';
 import { MoreFeaturesSection } from '@/app/components/MoreFeaturesSection';
 import { TeamSection } from '@/app/components/TeamSection';
+import { ContactSection } from '@/app/components/ContactSection';
 
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
       <BubblesSection />
       <MoreFeaturesSection />
       <TeamSection />
+      <ContactSection />
     </main>
   );
 }

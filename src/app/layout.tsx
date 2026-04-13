@@ -42,6 +42,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.get-pinit.co.uk"),
   title: "Pinit - Never settle on a restaurant again",
   description: "Organise your saved spots, sync with friends, and find the perfect restaurant for everyone. Join the waitlist for early access.",
   icons: {
